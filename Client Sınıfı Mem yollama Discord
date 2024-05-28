@@ -1,0 +1,46 @@
+import discord
+import os
+import random
+
+# ayricaliklar (intents) değişkeni botun ayrıcalıklarını depolayacak
+intents = discord.Intents.default()
+# Mesajları okuma ayrıcalığını etkinleştirelim
+intents.message_content = True
+# client (istemci) değişkeniyle bir bot oluşturalım ve ayrıcalıkları ona aktaralım
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print(f'{client.user} olarak giriş yaptık.')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith('$merhaba'):
+        await message.channel.send("Selam!")
+    elif message.content.startswith('$bye'):
+        await message.channel.send("\\U0001f642")
+    elif message.content.startswith("$benahmet"):
+        await message.channel.send("Mehaba Ahmet! Tanıştığımıza memnun oldum.")
+    elif message.content.startswith("$mem1"):
+        with open(f"images/mem1.png", "rb") as f:
+            picture = discord.File(f)
+        await message.channel.send(file=picture)
+    elif message.content.startswith("$mem2"):
+        with open(f"images/mem2.png", "rb") as f:
+            picture = discord.File(f)
+        await message.channel.send(file=picture)
+    elif message.content.startswith("$mem3"):
+        with open(f"images/mem3.png", "rb") as f:
+            picture = discord.File(f)
+        await message.channel.send(file=picture)
+    elif message.content.startswith("$rastgelemem"):
+        img_name = random.choice(os.listdir("images"))
+        with open (f"images/{img_name}", "rb") as f:
+            picture = discord.File(f)
+        await message.channel.send(file=picture)
+    else:
+        await message.channel.send(message.content)
+
+client.run("BOTUNUZUN TOKENI BURADA OLMALIDIR")
